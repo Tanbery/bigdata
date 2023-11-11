@@ -1,0 +1,7 @@
+kafka:
+  bootstrap-servers: "127.0.0.1:9092"
+  producer:
+    url: "https://stream.wikimedia.org/v2/stream/recentchange"
+    raw-topicname : "wikimedia.recentchange"
+
+

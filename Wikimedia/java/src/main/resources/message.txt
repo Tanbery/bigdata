@@ -1,0 +1,87 @@
+Event Id:
+[
+    {
+	"topic":"eqiad.mediawiki.recentchange",
+	"partition":0,
+	"timestamp":1693748914001
+    },
+    {
+	"topic":"codfw.mediawiki.recentchange",
+	"partition":0,
+	"offset":-1
+    }
+]
+
+Event Data:
+{
+	"$schema":"/mediawiki/recentchange/1.0.0",
+	"meta":{
+		"uri":"https://commons.wikimedia.org/wiki/Category:Source_categories_(flat_list)",
+		"request_id":"775038da-4754-452f-ab5e-0b4e3e9a31f3",
+		"id":"fb2d5ed0-174f-44ea-911c-9533e06768dc",
+		"dt":"2023-09-03T13:48:34Z",
+		"domain":"commons.wikimedia.org",
+		"stream":"mediawiki.recentchange",
+		"topic":"eqiad.mediawiki.recentchange",
+		"partition":0,
+		"offset":4914505083
+	},
+	"id":2288221596,
+	"type":"categorize",
+	"namespace":14,
+	"title":"Category:Source categories (flat list)",
+	"title_url":"https://commons.wikimedia.org/wiki/Category:Source_categories_(flat_list)",
+	"comment":"[[:Category:Images from the Region of Peel Archives of Caledon Township]] added to category",
+	"timestamp":1693748914,
+	"user":"BotMultichill",
+	"bot":true,
+	"notify_url":"https://commons.wikimedia.org/w/index.php?diff=798104319&oldid=680507421&rcid=2288221596",
+	"server_url":"https://commons.wikimedia.org",
+	"server_name":"commons.wikimedia.org",
+	"server_script_path":"/w",
+	"wiki":"commonswiki",
+	"parsedcomment":"<a href=\"/wiki/Category:Images_from_the_Region_of_Peel_Archives_of_Caledon_Township\" title=\"Category:Images from the Region of Peel Archives of Caledon Township\">Category:Images from the Region of Peel Archives of Caledon Township</a> added to category"
+}
+
+
+
+[{
+	"topic":"eqiad.mediawiki.recentchange",
+	"partition":0,
+	"timestamp":1693767528001
+},
+{
+	"topic":"codfw.mediawiki.recentchange",
+	"partition":0,
+	"offset":-1
+}]
+
+{
+    "$schema":"/mediawiki/recentchange/1.0.0",
+    "meta":{
+        "uri":"https://commons.wikimedia.org/wiki/Category:Media_contributed_by_the_Digital_Public_Library_of_America",
+        "request_id":"6525fb6d-7517-447d-b7dd-7d8ca7a4b297",
+        "id":"77968b26-4c68-44cf-8fd3-e7814386b000",
+        "dt":"2023-09-03T18:58:48Z",
+        "domain":"commons.wikimedia.org",
+        "stream":"mediawiki.recentchange",
+        "topic":"eqiad.mediawiki.recentchange",
+        "partition":0,
+        "offset":4915512707
+    },
+    "id":2288590968,
+    "type":"categorize",
+    "namespace":14,
+    "title":"Category:Media contributed by the Digital Public Library of America",
+    "title_url":"https://commons.wikimedia.org/wiki/Category:Media_contributed_by_the_Digital_Public_Library_of_America",
+    "comment":"[[:File:East Boston Free Press April 21, 1888 - DPLA - 4c59d8fcf5c52d194854a6576cd1f0e7 (page 5).jpg]] added to category",
+    "timestamp":1693767528,
+    "user":"DPLA bot",
+    "bot":true,
+    "notify_url":"https://commons.wikimedia.org/w/index.php?diff=798203365&oldid=0&rcid=2288590968",
+    "server_url":"https://commons.wikimedia.org",
+    "server_name":"commons.wikimedia.org",
+    "server_script_path":"/w",
+    "wiki":"commonswiki",
+    "parsedcomment":"<a href=\"/wiki/File:East_Boston_Free_Press_April_21,_1888_-_DPLA_-_4c59d8fcf5c52d194854a6576cd1f0e7_(page_5).jpg\" title=\"File:East Boston Free Press April 21, 1888 - DPLA - 4c59d8fcf5c52d194854a6576cd1f0e7 (page 5).jpg\">File:East Boston Free Press April 21, 1888 - DPLA - 4c59d8fcf5c52d194854a6576cd1f0e7 (page 5).jpg</a> added to category"
+}

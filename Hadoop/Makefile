@@ -1,0 +1,69 @@
+up:
+	sudo docker-compose -f hadoop-compose.yml up -d
+down: 
+	sudo docker-compose -f hadoop-compose.yml down
+	
+	
+# _BUILD_ARGS_TAG ?= ${GIT_HASH}
+# _BUILD_ARGS_RELEASE_TAG ?= latest
+# _BUILD_ARGS_DOCKERFILE ?= Dockerfile
+ 
+# _builder:
+#          docker build --tag ${DOCKER_USERNAME}/${APPLICATION_NAME}:${_BUILD_ARGS_TAG} -f ${_BUILD_ARGS_DOCKERFILE} .
+ 
+# _pusher:
+#          docker push ${DOCKER_USERNAME}/${APPLICATION_NAME}:${_BUILD_ARGS_TAG}
+ 
+# _releaser:
+#          docker pull ${DOCKER_USERNAME}/${APPLICATION_NAME}:${_BUILD_ARGS_TAG}
+#          docker tag  ${DOCKER_USERNAME}/${APPLICATION_NAME}:${_BUILD_ARGS_TAG} ${DOCKER_USERNAME}/${APPLICATION_NAME}:latest
+#          docker push ${DOCKER_USERNAME}/${APPLICATION_NAME}:${_BUILD_ARGS_RELEASE_TAG}
+
+		 
+# build:
+#          $(MAKE) _builder
+ 
+# push:
+#          $(MAKE) _pusher
+ 
+# release:
+#          $(MAKE) _releaser
+
+		 
+# build_%:
+#          $(MAKE) _builder \
+#                      -e _BUILD_ARGS_TAG="$*-${GIT_HASH}" \
+#                      -e _BUILD_ARGS_DOCKERFILE="Dockerfile.$*"
+ 
+# push_%:
+#          $(MAKE) _pusher \
+#                      -e _BUILD_ARGS_TAG="$*-${GIT_HASH}"
+ 
+# release_%:
+#          $(MAKE) _releaser \
+#                      -e _BUILD_ARGS_TAG="$*-${GIT_HASH}" \
+#                      -e _BUILD_ARGS_RELEASE_TAG="$*-latest"		 
+
+
+
+
+# DOCKER_NETWORK = docker-hadoop_default
+# ENV_FILE = hadoop.env
+# current_branch := $(shell git rev-parse --abbrev-ref HEAD)
+# build:
+# 	docker build -t bde2020/hadoop-base:$(current_branch) ./base
+# 	docker build -t bde2020/hadoop-namenode:$(current_branch) ./namenode
+# 	docker build -t bde2020/hadoop-datanode:$(current_branch) ./datanode
+# 	docker build -t bde2020/hadoop-resourcemanager:$(current_branch) ./resourcemanager
+# 	docker build -t bde2020/hadoop-nodemanager:$(current_branch) ./nodemanager
+# 	docker build -t bde2020/hadoop-historyserver:$(current_branch) ./historyserver
+# 	docker build -t bde2020/hadoop-submit:$(current_branch) ./submit
+
+# wordcount:
+# 	docker build -t hadoop-wordcount ./submit
+# 	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -mkdir -p /input/
+# 	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -copyFromLocal -f /opt/hadoop-3.2.1/README.txt /input/
+# 	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-wordcount
+# 	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -cat /output/*
+# 	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -rm -r /output
+# 	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -rm -r /input

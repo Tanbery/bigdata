@@ -1,0 +1,17 @@
+{
+  "name": "kafka-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "produce": "node app-producer.js",
+    "consume": "node app-consumer.js",
+    "admin": "node app-admin.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  },
+  "keywords": [],
+  "description": ""
+}
