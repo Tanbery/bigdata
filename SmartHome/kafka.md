@@ -4,6 +4,7 @@ mesaj bir kere publish edilir ve 1 kere consume edilir. Sonra queue uzerinden si
 Tum Comsumer'lari bir Comsumer Grup'un icine koyarsak her consumer bir tane Partition'dan mesajlari alir. 
 
 
+
 ## Pub/Sub: 
 mesaj bir kere publish edilir, 1den fazla consume edilir. Sonra queue uzerinden silinir. 
 Her consumer'i ayri bir Comsumer Groupa alirsak, ayni mesaj birden fazla comsumer tarafindan kullanilabilir.  
