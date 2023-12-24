@@ -4,6 +4,7 @@ services:
     image: flink:latest
     ports:
       - "8081:8081"
+    command: jobmanager
     # command: standalone-job --job-classname com.job.ClassName [--job-id <job id>] [--fromSavepoint /path/to/savepoint [--allowNonRestoredState]] [job arguments]
     volumes:
       - /host/path/to/job/artifacts:/opt/flink/usrlib
