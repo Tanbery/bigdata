@@ -146,31 +146,53 @@ services:
   #     net_pet:
   #       ipv4_address: 172.27.1.11
 
-  zeppelin:
-    image: openkbs/docker-spark-bde2020-zeppelin
-    container_name: zeppelin
-    # restart: always
-    environment:
-      CORE_CONF_fs_defaultFS: "hdfs://namenode:8020"
-      SPARK_MASTER: "spark://spark-master:7077"
-      MASTER: "spark://spark-master:7077"
-      SPARK_MASTER_URL: spark://spark-master:7077
-      ZEPPELIN_PORT: 8085
-      ZEPPELIN_JAVA_OPTS:
-        -Dspark.driver.memory=1g
-        -Dspark.executor.memory=2g
-    ports:
-      - "19090:8085"
-    env_file:
-      - ./hadoop-hive.env
-    volumes:
-      - /tmp/simple-demo/zeppelin/data:/usr/lib/zeppelin/data:rw
-      - /tmp/simple-demo/zeppelin/notebook:/usr/lib/zeppelin/notebook:rw
-    command: /usr/lib/zeppelin/bin/zeppelin.sh
-    networks:
-      net_pet:
-        ipv4_address: 172.27.1.12
-
+  #zeppelin:
+  #  image: openkbs/docker-spark-bde2020-zeppelin
+  #  container_name: zeppelin
+  #  # restart: always
+  #  environment:
+  #    CORE_CONF_fs_defaultFS: "hdfs://namenode:8020"
+  #    SPARK_MASTER: "spark://spark-master:7077"
+  #    MASTER: "spark://spark-master:7077"
+  #    SPARK_MASTER_URL: spark://spark-master:7077
+  #    ZEPPELIN_PORT: 8085
+  #    ZEPPELIN_JAVA_OPTS:
+  #      -Dspark.driver.memory=1g
+  #      -Dspark.executor.memory=2g
+  #  ports:
+  #    - "19090:8085"
+  #  env_file:
+  #    - ./hadoop-hive.env
+  #  volumes:
+  #    - /tmp/simple-demo/zeppelin/data:/usr/lib/zeppelin/data:rw
+  #    - /tmp/simple-demo/zeppelin/notebook:/usr/lib/zeppelin/notebook:rw
+  #  command: /usr/lib/zeppelin/bin/zeppelin.sh
+  #  networks:
+  #    net_pet:
+  #      ipv4_address: 172.27.1.12
+  
+  #zeppelin:
+  #  image: apache/zeppelin:0.8.0
+  #  container_name: zeppelin
+  #  ports:
+  #    - "8085:8085"
+  #  volumes:
+  #    - ./spark:/zeppelin/spark
+  #    - ./notebooks:/zeppelin/notebook
+  #  environment:
+  #    - "MASTER=spark://spark-master:7077"
+  #    - "SPARK_MASTER=spark://spark-master:7077"
+  #    - "SPARK_HOME=/zeppelin/spark"
+  #    - "CORE_CONF_fs_defaultFS: hdfs://namenode:8020"
+  #    - "SPARK_MASTER_URL: spark://spark-master:7077"
+  #    - "ZEPPELIN_PORT: 8085"
+  #  env_file:
+  #    - ./hadoop-hive.env
+  #  command: /usr/lib/zeppelin/bin/zeppelin.sh
+  #  networks:
+  #    net_pet:
+  #      ipv4_address: 172.27.1.12 
+  
   hue:
     image: gethue/hue:20191107-135001
     hostname: hue

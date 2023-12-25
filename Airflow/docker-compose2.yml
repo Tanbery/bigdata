@@ -48,3 +48,9 @@ volumes:
     driver: local
   redis_data:
     driver: local
+
+
+
+    #http://localhost:8090
+    #username : user
+    #password : bitnami 
