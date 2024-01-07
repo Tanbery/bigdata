@@ -21,7 +21,7 @@ services:
     container_name: datanode
     volumes:
       - /tmp/hdfs/datanode:/hadoop/dfs/data
-      - ./bank:/bank
+      #- ./bank:/bank
     env_file:
       - ./hadoop-hive.env
     environment:

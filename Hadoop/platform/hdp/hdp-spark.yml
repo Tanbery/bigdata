@@ -1,0 +1,61 @@
+version: '3' 
+services:
+  spark-master:
+    image: bde2020/spark-master:2.4.0-hadoop2.7
+    container_name: spark-master
+    ports:
+      - 8080:8080
+      - 7077:7077
+      - 4040:4040
+
+    env_file:
+      - ./hadoop.env
+    networks:
+      net_pet:
+        ipv4_address: 172.27.1.10
+     
+  spark-worker:
+    image: bde2020/spark-worker:2.4.0-hadoop2.7
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+    ports:
+      - "8081:8081"
+      #- 4040:4040
+    env_file:
+      - ./hadoop.env
+    networks:
+      net_pet:
+        ipv4_address: 172.27.1.11
+
+  spark-notebook:
+    image: bde2020/spark-notebook:2.1.0-hadoop2.8-hive
+    container_name: spark-notebook
+    environment:
+      - NOTEBOOKS_DIR=/data/notebooks
+    env_file:
+      - ./hadoop.env
+    ports:
+      - 9001:9001
+    networks:
+      net_pet:
+        ipv4_address: 172.27.1.12
+  
+networks:
+  net_pet:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.0.0/16
+
+# if docker-compose up gives port error 
+# net stop winnat
+# docker-compose up ...
+# net start winnat
+
+
+# Verify Namenode     : http://localhost:50070/
+# Verify SparkMaster  : http://localhost:8080/
+# Verify Hue              : http://localhost:8888/ 

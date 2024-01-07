@@ -1,0 +1,56 @@
+version: '3' 
+services:
+  hive-server:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    container_name: hive-server
+    env_file:
+      - ./hadoop.env
+    environment:
+      SERVICE_PRECONDITION: "hive-metastore:9083"
+    ports:
+      - "10000:10000"
+    depends_on:
+      - hive-metastore
+    networks:
+      net_pet:
+        ipv4_address: 172.27.1.7
+  
+  hive-metastore:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    container_name: hive-metastore
+    env_file:
+      - ./hadoop.env
+    command: /opt/hive/bin/hive --service metastore
+    environment:
+      SERVICE_PRECONDITION: "hive-metastore-postgresql:5432"
+    ports:
+      - "9083:9083"
+    depends_on:
+      - hive-metastore-postgresql
+    networks:
+      net_pet:
+        ipv4_address: 172.27.1.8
+  
+  hive-metastore-postgresql:
+    image: bde2020/hive-metastore-postgresql:2.3.0
+    container_name: hive-metastore-postgresql
+    networks:
+      net_pet:
+        ipv4_address: 172.27.1.9
+  
+networks:
+  net_pet:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.0.0/16
+
+# if docker-compose up gives port error 
+# net stop winnat
+# docker-compose up ...
+# net start winnat
+
+
+# Verify Namenode     : http://localhost:50070/
+# Verify SparkMaster  : http://localhost:8080/
+# Verify Hue              : http://localhost:8888/ 
