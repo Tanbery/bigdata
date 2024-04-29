@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-obs-example
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 10Gi
+  flexVolume:
+    driver: huawei.com/fuxiobs
+    fsType: obs
+    options:
+      fsType: obs
+      kubernetes.io/namespace: default
+      region: cn-east-3
+      storage_class: STANDARD
+      volumeID: bucket-enf
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: obs-standard
+----
+apiVersion: v1 
+kind: PersistentVolume 
+metadata: 
+  name: pv-obs
+  annotations:
+    pv.kubernetes.io/provisioned-by: flexvolume-huawei.com/fuxiobs
+spec: 
+  accessModes: 
+  - ReadWriteMany 
+  capacity: 
+    storage: 10Gi 
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: pvc-obs-example
+    namespace: default
+  flexVolume: 
+    driver: huawei.com/fuxiobs 
+    fsType: obs 
+    options: 
+      fsType: obs 
+      region: cn-east-3
+      storage_class: STANDARD 
+      volumeID: bucket-enf
+  persistentVolumeReclaimPolicy: Retain 
+  storageClassName: obs-standard
