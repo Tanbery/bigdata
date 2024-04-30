@@ -4,14 +4,13 @@ kind: PersistentVolume
 metadata:
   name: local-pv
 spec:
+  accessModes:
+    - ReadWriteOnce
   capacity:
     storage: 5Gi
+  storageClassName: standard
   hostPath:
     path: /tmp/local-pv
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: standard
 
 ---
 apiVersion: v1
@@ -20,7 +19,9 @@ metadata:
   name: grafana-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
+  storageClassName: standard
+  volumeName: local-pv
   resources:
     requests:
       storage: 2Gi

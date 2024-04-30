@@ -12,6 +12,16 @@ services:
       ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_SERVERS: zoo1:2888:3888
 
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka1:29092"
+    depends_on:
+      - kafka1
+
   kafka1:
     image: confluentinc/cp-kafka:7.3.2
     hostname: kafka1
