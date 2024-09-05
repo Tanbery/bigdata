@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: airflow
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: airflow
+  namespace: airflow
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: airflow-secret
+  namespace: airflow
+type: Opaque
+data:
+  postgres-password: <BASE64_ENCODED_PASSWORD>
+  fernet-key: <BASE64_ENCODED_FERNET_KEY>
+  secret-key: <BASE64_ENCODED_SECRET>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-webserver
+  namespace: airflow
+  labels:
+    app: airflow
+spec:
+  replicas: 3  # Increase replicas for HA
+  selector:
+    matchLabels:
+      app: airflow
+      tier: webserver
+  template:
+    metadata:
+      labels:
+        app: airflow
+        tier: webserver
+    spec:
+      serviceAccountName: airflow
+      containers:
+      - name: webserver
+        image: apache/airflow:2.4.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: AIRFLOW__CORE__EXECUTOR
+          value: "CeleryExecutor"
+        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: postgres-password
+        - name: AIRFLOW__CORE__FERNET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: fernet-key
+        - name: AIRFLOW__WEBSERVER__SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: secret-key
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 15
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: airflow-db
+  namespace: airflow
+spec:
+  serviceName: "airflow-db"
+  replicas: 2  # Increase for HA
+  selector:
+    matchLabels:
+      app: airflow-db
+  template:
+    metadata:
+      labels:
+        app: airflow-db
+    spec:
+      containers:
+      - name: airflow-db
+        image: postgres:13
+        env:
+        - name: POSTGRES_DB
+          value: airflow
+        - name: POSTGRES_USER
+          value: airflow
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: postgres-password
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-data
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 20Gi
