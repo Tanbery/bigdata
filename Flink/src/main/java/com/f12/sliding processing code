@@ -1,4 +1,5 @@
-package p1;
+package com.f12;
+
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;

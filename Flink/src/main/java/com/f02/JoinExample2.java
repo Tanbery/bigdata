@@ -1,4 +1,4 @@
-package com.acmecorp;
+package com.f02;
 
 import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.common.functions.MapFunction;

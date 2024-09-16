@@ -1,4 +1,4 @@
-package com.acmecorp;
+package com.f02;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -12,11 +12,13 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.utils.ParameterTool;
 
+import com.f01.WordCount;
+
 @SuppressWarnings("serial")
 public class JoinExample1 {
-	/***
+	
 	public static void main(String[] args) throws Exception {
-		/***
+		
 		// set up the execution environment
 		final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
@@ -25,7 +27,7 @@ public class JoinExample1 {
 		env.getConfig().setGlobalJobParameters(params);
 
 		// Read person file and generate tuples out of each string read
-		DataSet<Tuple2<Integer, String>> personSet = env.readTextFile(readFile("location"))
+		DataSet<Tuple2<Integer, String>> personSet = env.fromCollection(readFile("location"))
 				.map(new MapFunction<String, Tuple2<Integer, String>>() // presonSet = tuple of (1 John)
 				{
 					public Tuple2<Integer, String> map(String value) {
@@ -34,7 +36,7 @@ public class JoinExample1 {
 					}
 				});
 		// Read location file and generate tuples out of each string read
-		DataSet<Tuple2<Integer, String>> locationSet = env.readTextFile(readFile("person"))
+		DataSet<Tuple2<Integer, String>> locationSet = env.fromCollection(readFile("person"))
 				.map(new MapFunction<String, Tuple2<Integer, String>>() { // locationSet = tuple of (1 DC)
 					public Tuple2<Integer, String> map(String value) {
 						String[] words = value.split(",");
@@ -70,5 +72,5 @@ public class JoinExample1 {
         s.close();
         return out;
     }
-	 **/
+	 
 }
