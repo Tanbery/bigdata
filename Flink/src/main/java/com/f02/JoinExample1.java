@@ -14,7 +14,7 @@ import org.apache.flink.api.java.utils.ParameterTool;
 
 import com.f01.WordCount;
 
-@SuppressWarnings("serial")
+// @SuppressWarnings("serial")
 public class JoinExample1 {
 	
 	public static void main(String[] args) throws Exception {
@@ -35,6 +35,7 @@ public class JoinExample1 {
 						return new Tuple2<Integer, String>(Integer.parseInt(words[0]), words[1]);
 					}
 				});
+		
 		// Read location file and generate tuples out of each string read
 		DataSet<Tuple2<Integer, String>> locationSet = env.fromCollection(readFile("person"))
 				.map(new MapFunction<String, Tuple2<Integer, String>>() { // locationSet = tuple of (1 DC)
@@ -56,8 +57,11 @@ public class JoinExample1 {
 																										// DC)
 					}
 				});
-
-		joined.writeAsCsv(params.get("output"), "\n", " ");
+		if (params.has("output")) 
+			joined.writeAsCsv(params.get("output"), "\n", " ");
+		joined.print();
+		// locationSet.print();
+		// personSet.print();
 
 		env.execute("Join example");
 	}

@@ -34,8 +34,7 @@ public class WordCountStreaming {
       .sum(1); // group by the tuple field "0" and sum up tuple field "1"
 
     counts.print();
-
-    // execute program
+    
     env.execute("Streaming WordCount");
   }
 

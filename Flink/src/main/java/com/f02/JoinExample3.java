@@ -8,7 +8,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.utils.ParameterTool;
 
-@SuppressWarnings("serial")
+// @SuppressWarnings("serial")
 public class JoinExample3 {
 	public static void main(String[] args) throws Exception {
 
@@ -58,7 +58,9 @@ public class JoinExample3 {
 						return new Tuple3<Integer, String, String>(person.f0, person.f1, location.f1);
 					}
 				});
-		joined.writeAsCsv(params.get("output"), "\n", " ");
+		if (params.has("output"))
+			joined.writeAsCsv(params.get("output"), "\n", " ");
+		joined.print();
 
 		env.execute("Right Outer Join Example");
 	}
