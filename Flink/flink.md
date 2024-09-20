@@ -1,3 +1,22 @@
+## Install Spark
+```shell
+curl -o flink-1.20.0-bin-scala_2.12.tgz https://dlcdn.apache.org/flink/flink-1.20.0/flink-1.20.0-bin-scala_2.12.tgz
+
+sudo mv flink-1.20.0-bin-scala_2.12.tgz /opt/ 
+sudo tar xvf flink-1.20.0-bin-scala_2.12.tgz
+sudo mv flink-1.20.0 /opt/flink
+sudo rm -rf flink-1.20.0-bin-scala_2.12.tgz
+
+
+vi ~/.bashrc
+
+# paste following to bottom 
+export FLINK_HOME=/opt/flink
+export PATH=$PATH:$FLINK_HOME/bin
+export PATH=$PATH:$FLINK_HOME/sbin
+```
+
+
 
 # Docker Compose File
 ```yml
