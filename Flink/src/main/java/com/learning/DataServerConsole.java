@@ -5,8 +5,6 @@ import java.util.Random;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.ServerSocket;
-import java.util.Date;
-import java.sql.Timestamp;
 
 public class DataServerConsole {
 	public static void main(String[] args) throws IOException{
@@ -17,7 +15,6 @@ public class DataServerConsole {
 				try {
 					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 					Random rand = new Random();
-					Date d = new Date();
 					while (true){
 						int i = rand.nextInt(100);
 						String s = "" + System.currentTimeMillis() + "," + i;	

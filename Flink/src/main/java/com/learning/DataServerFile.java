@@ -28,6 +28,7 @@ public class DataServerFile
 					}
 					
 				} finally{
+					br.close();
 					socket.close();
 				}
 			

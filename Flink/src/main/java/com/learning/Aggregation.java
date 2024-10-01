@@ -6,6 +6,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Aggregation {
+  @SuppressWarnings("deprecation")
   public static void main(String[] args) throws Exception {
     // set up the streaming execution environment
     final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

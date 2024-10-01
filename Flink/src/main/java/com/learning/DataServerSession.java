@@ -36,6 +36,7 @@ public class DataServerSession
 					}
 					
 				} finally{
+					br.close();
 					socket.close();
 				}
 			

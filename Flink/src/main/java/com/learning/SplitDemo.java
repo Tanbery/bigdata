@@ -1,12 +1,6 @@
 package com.learning;
 //package p1;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import org.apache.flink.api.common.functions.FilterFunction;
-import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -16,6 +10,7 @@ import org.apache.flink.util.OutputTag;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 
 public class SplitDemo {
+  @SuppressWarnings("deprecation")
   public static void main(String[] args) throws Exception {
     // set up the stream execution environment
     final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

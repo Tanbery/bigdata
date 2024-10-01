@@ -6,8 +6,6 @@ import java.util.Random;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.ServerSocket;
-import java.util.Date;
-import java.sql.Timestamp;
 
 public class DataServerSessionEvent {
 	public static void main(String[] args) throws IOException{
@@ -18,7 +16,6 @@ public class DataServerSessionEvent {
 				try {
 					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 					Random rand = new Random();
-					Date d = new Date();
 					int count = 0;
 					while (true){
 						count++;

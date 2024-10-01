@@ -43,18 +43,6 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
         }
     }
 
-    // private List<String> readCategories() {
-    //     InputStream in = ClickEventGenerator.class.getClassLoader().getResourceAsStream("categories.txt");
-    //     ArrayList<String> out = new ArrayList<String>();
-    //     Scanner s = new Scanner(in);
-    //     s.useDelimiter("\n");
-    //     while(s.hasNext()) {
-    //         out.add(s.next());
-    //     }
-    //     s.close();
-    //     return out;
-    // }
-
     @Override
     public void run(SourceContext<String> sourceContext) throws Exception {
 
@@ -70,14 +58,14 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
             node.put("user.ip", intIPtoString(u.getIP()));
             node.put("user.accountId", u.getId());
 
-            // node.put("page", getNextUrl());
+            //node.put("page", getNextUrl());
 
             node.put("host.timestamp", ts);
             // write fake hostname for globalcorp.com's berlin load balancer
-            // node.put("host", String.format("lb-brl-%d-%d.globalcorp.com",
-            //         getRuntimeContext().getNumberOfParallelSubtasks(),
-            //         getRuntimeContext().getIndexOfThisSubtask())
-            //     );
+            node.put("host", String.format("lb-brl-%d-%d.globalcorp.com",
+                    getRuntimeContext().getNumberOfParallelSubtasks(),
+                    getRuntimeContext().getIndexOfThisSubtask())
+                );
             node.put("host.sequence", sequenceId);
 
             sourceContext.collectWithTimestamp(mapper.writeValueAsString(node), ts);
@@ -129,38 +117,7 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
         int userIndex = RND.nextInt(users.size());
         return users.get(userIndex);
     }
-    /**
-    private String getNextUrl() {
-        StringBuffer sb = new StringBuffer();
-        int id = RND.nextInt(3_000_000);
-        switch(id % 7) {
-            case 0:
-            case 1:
-                sb.append("/categories/");
-                sb.append(categories.get(id % categories.size()));
-                break;
-            case 2:
-            case 3:
-            case 4:
-                sb.append("/productDetails/");
-                sb.append(id / 10); // strip last digit
-                break;
-            case 5:
-                sb.append("/blog/");
-                sb.append(id / 10);
-                break;
-            case 6:
-                sb.append("/search?q=");
-                sb.append(RandomStringUtils.randomAlphabetic(id % 5));
-                break;
-            default:
-                throw new RuntimeException("that's kinda unexpected right now");
-
-        }
-
-        return sb.toString();
-    }
-    */
+  
 
     private long getNextTimestamp() {
         this.eventTimeMillis += 10;
@@ -170,9 +127,6 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
     @Override
     public void cancel() {
         running = false;
-    }
-
-    public static void main(String[] args) {
     }
 
     private interface User {
