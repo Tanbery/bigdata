@@ -1,4 +1,4 @@
-package com.learning;
+package com.learned;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.operators.base.JoinOperatorBase.JoinHint;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -13,7 +14,7 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.utils.ParameterTool;
 
 // @SuppressWarnings("serial")
-public class JoinExample1 {
+public class JoinInner {
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -45,7 +46,7 @@ public class JoinExample1 {
 
 		// join datasets on person_id
 		// joined format will be <id, person_name, state>
-		DataSet<Tuple3<Integer, String, String>> joined = personSet.join(locationSet).where(0).equalTo(0)
+		DataSet<Tuple3<Integer, String, String>> joined = personSet.join(locationSet,JoinHint.OPTIMIZER_CHOOSES).where(0).equalTo(0)
 				.with(new JoinFunction<Tuple2<Integer, String>, Tuple2<Integer, String>, Tuple3<Integer, String, String>>() {
 
 					public Tuple3<Integer, String, String> join(Tuple2<Integer, String> person,
@@ -57,14 +58,15 @@ public class JoinExample1 {
 				});
 		if (params.has("output")) 
 			joined.writeAsCsv(params.get("output"), "\n", " ");
-		joined.print();
+		else 
+			joined.print();
 		// locationSet.print();
 		// personSet.print();
 
 		env.execute("Join example");
 	}
 	private static ArrayList<String> readFile(String filename) {
-        InputStream in = WordCount.class.getClassLoader().getResourceAsStream(filename);
+        InputStream in = JoinInner.class.getClassLoader().getResourceAsStream(filename);
         ArrayList<String> out = new ArrayList<>();
         Scanner s = new Scanner(in);
         s.useDelimiter("\n");

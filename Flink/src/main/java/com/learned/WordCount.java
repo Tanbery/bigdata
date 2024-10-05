@@ -1,4 +1,4 @@
-package com.learning;
+package com.learned;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -47,8 +47,8 @@ public class WordCount {
     
     if (params.has("output")) 
       counts.writeAsCsv(params.get("output"), "\n", " ");
-    
-    counts.print();
+    else
+      counts.print();
     env.execute("WordCount Example");
 
   }

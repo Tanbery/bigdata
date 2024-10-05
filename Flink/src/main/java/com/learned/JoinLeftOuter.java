@@ -1,4 +1,4 @@
-package com.learning;
+package com.learned;
 
 import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -9,7 +9,7 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.utils.ParameterTool;
 
 // @SuppressWarnings("serial")
-public class JoinExample4 {
+public class JoinLeftOuter {
 	public static void main(String[] args) throws Exception {
 
 		// set up the execution environment
@@ -39,28 +39,27 @@ public class JoinExample4 {
 					}
 				});
 
-		// right outer join datasets on person_id
+		// left outer join datasets on person_id
 		// joined format will be <id, person_name, state>
 
-		DataSet<Tuple3<Integer, String, String>> joined = personSet.rightOuterJoin(locationSet).where(0).equalTo(0)
+		DataSet<Tuple3<Integer, String, String>> joined = personSet.leftOuterJoin(locationSet).where(0).equalTo(0)
 				.with(new JoinFunction<Tuple2<Integer, String>, Tuple2<Integer, String>, Tuple3<Integer, String, String>>() {
-
 					public Tuple3<Integer, String, String> join(Tuple2<Integer, String> person,
 							Tuple2<Integer, String> location) {
 						// check for nulls
-						if (person == null) {
-							return new Tuple3<Integer, String, String>(location.f0, "NULL", location.f1);
+						if (location == null) {
+							return new Tuple3<Integer, String, String>(person.f0, person.f1, "NULL");
 						}
 
 						return new Tuple3<Integer, String, String>(person.f0, person.f1, location.f1);
 					}
-				});// .collect();
+				});
 
 		if (params.has("output")) 
 			joined.writeAsCsv(params.get("output"), "\n", " ");
-		joined.print();
+		else
+			joined.print();
 
-		env.execute("Right Outer Join Example");
+		env.execute("Left Outer Join Example");
 	}
-
 }

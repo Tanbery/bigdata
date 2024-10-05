@@ -1,0 +1,24 @@
+#version: '3'
+services:
+  flink-master:
+    image: bde2020/flink-master:1.14.5-hadoop3.2
+    hostname: flink-master
+    container_name: flink-master
+    volumes:
+      - /home/enver/jars:/opt
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+      # - "9090:9090"
+
+  flink-worker:
+    image: bde2020/flink-worker:1.14.5-hadoop3.2
+    hostname: flink-worker
+    container_name: flink-worker
+    volumes:
+      - /home/enver/jars:/opt
+    environment:
+      - FLINK_MASTER_PORT_6123_TCP_ADDR=flink-master
+  #     - FLINK_NUM_TASK_SLOTS=2
+    depends_on:
+        - flink-master

@@ -1,4 +1,4 @@
-package com.learning;
+package com.learned;
 
 import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -9,7 +9,7 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.utils.ParameterTool;
 
 // @SuppressWarnings("serial")
-public class JoinExample3 {
+public class JoinFullOuter {
 	public static void main(String[] args) throws Exception {
 
 		// set up the execution environment
@@ -60,7 +60,8 @@ public class JoinExample3 {
 				});
 		if (params.has("output"))
 			joined.writeAsCsv(params.get("output"), "\n", " ");
-		joined.print();
+		else
+			joined.print();
 
 		env.execute("Right Outer Join Example");
 	}

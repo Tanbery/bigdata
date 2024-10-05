@@ -20,5 +20,4 @@ public class StreamingJob {
 		env.execute("Streaming Analytics");
 		System.out.println("##############END##########################");
 	}
-
 }
