@@ -21,17 +21,18 @@ FLINK_HOME ?= /opt/flink-1.18.1
 FLINK_CLUSTER ?= localhost:8081
 INPUT_FILE ?= /path/to/input/file
 OUTPUT_DIR ?= /path/to/output/dir
-ARGS ?= --input $(INPUT_FILE) --output $(OUTPUT_DIR)
+ARGS ?= #--input $(INPUT_FILE) --output $(OUTPUT_DIR)
 
 
 
 # Maven goals
 MVN := mvn
+PYTHON:=python3
 
 print-jar:
 	@echo "JAR file is: '$(JAR_FILE)'"
 
-print:
+print-var:
 	@echo "Project Name: 	$(PROJECT_NAME)"
 	@echo "Project Version:  $(PROJECT_VERSION)"
 	@echo "Main Class: 		  $(MAIN_CLASS)"
@@ -42,8 +43,11 @@ print:
 	@echo "FLINK CLUSTER: $(FLINK_CLUSTER)"
 	@echo "ARGS:               $(ARGS)"
 
+gen:
+	@echo "Generating fake data"
+	$(PYTHON) Generator/main.py
 
-# Default target: Build the project
+
 all: build
 
 # Build the Flink job using Maven
@@ -58,9 +62,10 @@ clean:
 	$(MVN) clean
 
 # Run the Flink job locally using the Flink "run" command
-run: build
+run:
 	@echo "Running the Flink job locally..."
 	$(FLINK_HOME)/bin/flink run -c $(MAIN_CLASS) $(JAR_FILE) $(ARGS)
+
 
 # Run the Flink job on a remote cluster
 run-cluster: build
@@ -77,6 +82,11 @@ cancel:
 	@echo "Canceling the Flink job..."
 	$(FLINK_HOME)/bin/flink cancel $(JOB_ID)
 
+# Cancel the Flink job
+list:
+	@echo "Listing the Flink running job..."
+	$(FLINK_HOME)/bin/flink list)
+
 # Print the help
 help:
 	@echo "Usage:"
@@ -87,5 +97,7 @@ help:
 	@echo "  make run-detached    - Run the job in detached mode"
 	@echo "  make cancel          - Cancel the job on the cluster"
 	@echo "  make help            - Print this help message"
+	@echo "  make gen            - generate fake data"
+
 
 .PHONY: all build clean run run-cluster run-detached cancel help
