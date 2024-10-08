@@ -30,7 +30,6 @@ public class DataStreamJob {
         private static final String password = "postgres";
         private static final String topic = "financial_transactions";
 
-
         public static void main(String[] args) throws Exception {
 
                 // Read from Kafka
@@ -45,9 +44,9 @@ public class DataStreamJob {
 
                 DataStream<Transaction> transactionStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka source");
 
-                transactionStream.print();
-
-                //Setup JDBC Execution and Connection Options 
+                // transactionStream.print();
+                /*
+                Setup JDBC Execution and Connection Options
                 JdbcExecutionOptions execOptions = new JdbcExecutionOptions.Builder()
                                 .withBatchSize(1000)
                                 .withBatchIntervalMs(200)
@@ -60,9 +59,7 @@ public class DataStreamJob {
                                 .withUsername(username)
                                 .withPassword(password)
                                 .build();
-
-                
-                // jdbc_createTransactions();
+          
                 transactionStream.addSink(JdbcSink.sink(
                                 "CREATE TABLE IF NOT EXISTS transactions (" +
                                                 "transaction_id VARCHAR(255) PRIMARY KEY, " +
@@ -85,10 +82,8 @@ public class DataStreamJob {
                                 connOptions)).name("Create Transactions Table Sink");
 
                 transactionStream.addSink(JdbcSink.sink(
-                                "INSERT INTO transactions(transaction_id, product_id, product_name, product_category, product_price, "
-                                                +
-                                                "product_quantity, product_brand, total_amount, currency, customer_id, transaction_date, payment_method) "
-                                                +
+                                "INSERT INTO transactions(transaction_id, product_id, product_name, product_category, product_price, " +
+                                                "product_quantity, product_brand, total_amount, currency, customer_id, transaction_date, payment_method) " +
                                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
                                                 "ON CONFLICT (transaction_id) DO UPDATE SET " +
                                                 "product_id = EXCLUDED.product_id, " +
@@ -119,7 +114,7 @@ public class DataStreamJob {
                                 },
                                 execOptions,
                                 connOptions)).name("Insert into transactions table sink");
-                // jdbc_createSalesPerCategory();
+                
                 transactionStream.addSink(JdbcSink.sink(
                                 "CREATE TABLE IF NOT EXISTS sales_per_category (" +
                                                 "transaction_date DATE, " +
@@ -145,14 +140,11 @@ public class DataStreamJob {
                                                         salesPerCategory.getTotalSales() + t1.getTotalSales());
                                         return salesPerCategory;
                                 }).addSink(JdbcSink.sink(
-                                                "INSERT INTO sales_per_category(transaction_date, category, total_sales) "
-                                                                +
+                                                "INSERT INTO sales_per_category(transaction_date, category, total_sales) " +
                                                                 "VALUES (?, ?, ?) " +
-                                                                "ON CONFLICT (transaction_date, category) DO UPDATE SET "
-                                                                +
+                                                                "ON CONFLICT (transaction_date, category) DO UPDATE SET "  +
                                                                 "total_sales = EXCLUDED.total_sales " +
-                                                                "WHERE sales_per_category.category = EXCLUDED.category "
-                                                                +
+                                                                "WHERE sales_per_category.category = EXCLUDED.category " +
                                                                 "AND sales_per_category.transaction_date = EXCLUDED.transaction_date",
                                                 (JdbcStatementBuilder<SalesPerCategory>) (preparedStatement,
                                                                 salesPerCategory) -> {
@@ -166,7 +158,6 @@ public class DataStreamJob {
                                                 connOptions))
                                 .name("Insert into sales per category table");
 
-                // jdbc_createSalesPerDay();
                 transactionStream.addSink(JdbcSink.sink(
                                 "CREATE TABLE IF NOT EXISTS sales_per_day (" +
                                                 "transaction_date DATE PRIMARY KEY, " +
@@ -202,7 +193,7 @@ public class DataStreamJob {
                                                 execOptions,
                                                 connOptions))
                                 .name("Insert into sales per day table");
-                // jdbc_createSalesPerMonth();
+                
                 transactionStream.addSink(JdbcSink.sink(
                                 "CREATE TABLE IF NOT EXISTS sales_per_month (" +
                                                 "year INTEGER, " +
@@ -243,24 +234,29 @@ public class DataStreamJob {
                                                 execOptions,
                                                 connOptions))
                                 .name("Insert into sales per month table");
-
+                                */
 
                 transactionStream.sinkTo(
                                 new Elasticsearch7SinkBuilder<Transaction>()
                                                 .setHosts(new HttpHost("localhost", 9200, "http"))
                                                 .setEmitter((transaction, runtimeContext, requestIndexer) -> {
-
-                                                        String json = JsonUtil.convertTransactionToJson(transaction);
-
-                                                        IndexRequest indexRequest = Requests.indexRequest()
-                                                                        .index("transactions")
-                                                                        .id(transaction.getTransactionId())
-                                                                        .source(json, XContentType.JSON);
-                                                        requestIndexer.add(indexRequest);
+                                                        try {
+                                                                String json = JsonUtil.convertTransactionToJson(transaction);
+                                                                System.out.println(json);
+                                                                IndexRequest indexRequest = Requests.indexRequest()
+                                                                                .index("transactions")
+                                                                                .id(transaction.getTransactionId())
+                                                                                .source(json, XContentType.JSON);
+                                                                requestIndexer.add(indexRequest);
+                                                        } catch (Exception e) {
+                                                                System.err.println("Error indexing transaction: " + e.getMessage());
+                                                                e.printStackTrace();
+                                                            }
                                                 })
+                                                // .setBulkFlushMaxActions(500)
+                                                // .setBulkFlushInterval(5000)
                                                 .build())
                                 .name("Elasticsearch Sink");
-
                 // Execute program, beginning computation.
                 env.execute("Flink Ecommerce Realtime Streaming");
         }

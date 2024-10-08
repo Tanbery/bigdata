@@ -40,7 +40,7 @@ def main():
 
     curr_time = datetime.now()
 
-    while (datetime.now() - curr_time).seconds < 50:
+    while (datetime.now() - curr_time).seconds < 1:
         try:
             transaction = generate_sales_transactions()
             transaction['totalAmount'] = transaction['productPrice'] * transaction['productQuantity']
