@@ -45,8 +45,8 @@ public class DataStreamJob {
                 DataStream<Transaction> transactionStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka source");
 
                 // transactionStream.print();
-                /*
-                Setup JDBC Execution and Connection Options
+                
+                //Setup JDBC Execution and Connection Options
                 JdbcExecutionOptions execOptions = new JdbcExecutionOptions.Builder()
                                 .withBatchSize(1000)
                                 .withBatchIntervalMs(200)
@@ -234,7 +234,7 @@ public class DataStreamJob {
                                                 execOptions,
                                                 connOptions))
                                 .name("Insert into sales per month table");
-                                */
+                                
 
                 transactionStream.sinkTo(
                                 new Elasticsearch7SinkBuilder<Transaction>()
@@ -257,6 +257,7 @@ public class DataStreamJob {
                                                 // .setBulkFlushInterval(5000)
                                                 .build())
                                 .name("Elasticsearch Sink");
+                                
                 // Execute program, beginning computation.
                 env.execute("Flink Ecommerce Realtime Streaming");
         }
