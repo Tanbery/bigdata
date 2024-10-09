@@ -27,10 +27,6 @@ ARGS ?= #--input $(INPUT_FILE) --output $(OUTPUT_DIR)
 
 # Maven goals
 MVN := mvn
-PYTHON:=python3
-
-print-jar:
-	@echo "JAR file is: '$(JAR_FILE)'"
 
 print-var:
 	@echo "Project Name: 	$(PROJECT_NAME)"
@@ -43,26 +39,18 @@ print-var:
 	@echo "FLINK CLUSTER: $(FLINK_CLUSTER)"
 	@echo "ARGS:               $(ARGS)"
 
-gen:
-	@echo "Generating fake data"
-	$(PYTHON) Generator/main.py
-
 
 all: build
 
-# Build the Flink job using Maven
 build:
 	@echo "Building the Flink job..."
 	$(MVN) clean package
-
-# Clean the project
 
 clean:
 	@echo "Cleaning the project..."
 	$(MVN) clean
 
-# Run the Flink job locally using the Flink "run" command
-run:
+run-local:
 	@echo "Running the Flink job locally..."
 	$(FLINK_HOME)/bin/flink run -c $(MAIN_CLASS) $(JAR_FILE) $(ARGS)
 
@@ -92,12 +80,14 @@ help:
 	@echo "Usage:"
 	@echo "  make build           - Build the project"
 	@echo "  make clean           - Clean the project"
-	@echo "  make run       - Run the job locally"
+	@echo "  make run-local       - Run the job locally"
 	@echo "  make run-cluster     - Run the job on a cluster"
 	@echo "  make run-detached    - Run the job in detached mode"
 	@echo "  make cancel          - Cancel the job on the cluster"
 	@echo "  make help            - Print this help message"
-	@echo "  make gen            - generate fake data"
+	@echo "  make gen             - generate fake data"
 
 
-.PHONY: all build clean run run-cluster run-detached cancel help
+# .PHONY: all build clean run run-cluster run-detached cancel help
+.PHONY: help
+.DEFAULT_GOAL:=help
