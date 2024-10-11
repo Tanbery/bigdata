@@ -1,4 +1,4 @@
-#version: '3.8'
+version: '3.8'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
@@ -81,26 +81,44 @@ services:
       - elasticsearch
     ports:
       - 5601:5601
-  
-  # flink-master:
-  #   image: bde2020/flink-master:1.14.5-hadoop3.2
-  #   hostname: flink-master
-  #   container_name: flink-master
-  #   volumes:
-  #     - /home/enver/jars:/opt
-  #   ports:
-  #     - "8080:8080"
-  #     - "8081:8081"
-  #     # - "9090:9090"
 
-  # flink-worker:
-  #   image: bde2020/flink-worker:1.14.5-hadoop3.2
-  #   hostname: flink-worker
-  #   container_name: flink-worker
-  #   volumes:
-  #     - /home/enver/jars:/opt
-  #   environment:
-  #     - FLINK_MASTER_PORT_6123_TCP_ADDR=flink-master
-  # #     - FLINK_NUM_TASK_SLOTS=2
-  #   depends_on:
-  #       - flink-master
+  jobmanager:
+    image: flink:1.18.1-scala_2.12
+    ports:
+      - "8081:8081"
+      - "6123:6123"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+
+  taskmanager:
+    image: flink:1.18.1-scala_2.12
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+
+# #bde2020 Docker
+#  flink-master:
+#    image: bde2020/flink-master:1.14.5-hadoop3.2
+#    hostname: flink-master
+#    container_name: flink-master
+#    volumes:
+#      - /home/enver/jars:/opt
+#    ports:
+#      - "8080:8080"
+#      - "8081:8081"
+#      # - "9090:9090"
+#
+#  flink-worker:
+#    image: bde2020/flink-worker:1.14.5-hadoop3.2
+#    hostname: flink-worker
+#    container_name: flink-worker
+#    volumes:
+#      - /home/enver/jars:/opt
+#    environment:
+#      - FLINK_MASTER_PORT_6123_TCP_ADDR=flink-master
+#    #     - FLINK_NUM_TASK_SLOTS=2
+#    depends_on:
+#      - flink-master

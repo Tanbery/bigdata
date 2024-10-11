@@ -19,14 +19,13 @@ JAR_FILE := target/$(PROJECT_NAME)-$(PROJECT_VERSION).jar
 # Define paths and configurations
 FLINK_HOME ?= /opt/flink-1.18.1
 FLINK_CLUSTER ?= localhost:8081
-INPUT_FILE ?= /path/to/input/file
-OUTPUT_DIR ?= /path/to/output/dir
+#INPUT_FILE ?= /path/to/input/file
+#OUTPUT_DIR ?= /path/to/output/dir
 ARGS ?= #--input $(INPUT_FILE) --output $(OUTPUT_DIR)
-
-
 
 # Maven goals
 MVN := mvn
+PYTHON := python3
 
 print-var:
 	@echo "Project Name: 	$(PROJECT_NAME)"
@@ -39,6 +38,9 @@ print-var:
 	@echo "FLINK CLUSTER: $(FLINK_CLUSTER)"
 	@echo "ARGS:               $(ARGS)"
 
+gen:
+	@echo "Generating fake data..."
+	@$(PYTHON) ./Generator/main.py
 
 all: build
 
@@ -50,7 +52,7 @@ clean:
 	@echo "Cleaning the project..."
 	$(MVN) clean
 
-run-local:
+run-local:build
 	@echo "Running the Flink job locally..."
 	$(FLINK_HOME)/bin/flink run -c $(MAIN_CLASS) $(JAR_FILE) $(ARGS)
 
