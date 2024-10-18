@@ -13,7 +13,9 @@ PROJECT_VERSION:= $(shell mvn help:evaluate -Dexpression=project.version -q -Dfo
 MAIN_CLASS := $(call get_property,main.class)
 FLINK_VERSION := $(call get_property,flink.version)
 SCALA_VERSION := $(call get_property,scala.binary.version)
-JAR_FILE := target/$(PROJECT_NAME)-$(PROJECT_VERSION).jar
+JAR_FILE := target/$(PROJECT_NAME)-$(PROJECT_VERSION)-jar-with-dependencies.jar
+#JAR_FILE := target/$(PROJECT_NAME)-$(PROJECT_VERSION).jar
+
 
 
 # Define paths and configurations
@@ -26,6 +28,15 @@ ARGS ?= #--input $(INPUT_FILE) --output $(OUTPUT_DIR)
 # Maven goals
 MVN := mvn
 PYTHON := python3
+DOCKER := docker
+
+up:
+	@echo "Starting the services"
+	@$(DOCKER)  compose up -d
+
+down:
+	@echo "Stopping the services"
+	@$(DOCKER)  compose down
 
 print-var:
 	@echo "Project Name: 	$(PROJECT_NAME)"

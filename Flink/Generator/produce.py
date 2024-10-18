@@ -3,7 +3,7 @@ import random
 import time
 
 from faker import Faker
-from confluent_kafka import SerializingProducer
+from confluent_kafka import Producer
 from datetime import datetime
 
 fake = Faker()
@@ -29,36 +29,34 @@ def delivery_report(err, msg):
     if err is not None:
         print(f'Message delivery failed: {err}')
     else:
-        print(f"Message delivered to {msg.topic} [{msg.partition()}]")
-        
+        print(f"Message delivery succeed: {msg.topic()} [{msg.partition()}] [{msg.offset()}] key: [{msg.key()}] value: [{msg.value()}]")
         
 def main():
+    config = {
+            'bootstrap.servers': 'localhost:9092',
+            'acks':              'all'
+        }
     topic = 'financial_transactions'
-    producer= SerializingProducer({
-        'bootstrap.servers': 'localhost:9092'
-    })
+
+    producer= Producer(config)
 
     curr_time = datetime.now()
 
-    while (datetime.now() - curr_time).seconds < 1:
+    while (datetime.now() - curr_time).seconds < 50:
         try:
             transaction = generate_sales_transactions()
             transaction['totalAmount'] = transaction['productPrice'] * transaction['productQuantity']
-
-            print(transaction)
-
+            # print(transaction)
             producer.produce(topic,
                              key=transaction['transactionId'],
                              value=json.dumps(transaction),
                              on_delivery=delivery_report
                              )
             producer.poll(0)
-
-            #wait for 5 seconds before sending the next transaction
             time.sleep(1)
         except BufferError:
             print("Buffer full! Waiting...")
-            time.sleep(1)
+            time.sleep(5)
         except Exception as e:
             print(e)
 
