@@ -23,6 +23,7 @@ services:
       zookeeper:
         condition: service_healthy
     ports:
+      - "29092:29092"
       - "9092:9092"
       - "9101:9101"
     environment:
@@ -39,10 +40,11 @@ services:
       KAFKA_JMX_PORT: 9101
       KAFKA_JMX_HOSTNAME: localhost
     healthcheck:
-      test: [ "CMD", "bash", "-c", 'nc -z localhost 9092' ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: nc -z localhost 9092 || exit -1
+      start_period: 15s
+      interval: 5s
+      timeout: 10s
+      retries: 10
 
   kafka-ui:
     image: confluentinc/cp-enterprise-control-center:7.4.0
@@ -106,6 +108,7 @@ services:
       - "5601:5601"
 
   jobmanager:
+    container_name: jobmanager
     image: flink:1.18.1-scala_2.12
     ports:
       - "8081:8081"
@@ -115,6 +118,7 @@ services:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
 
   taskmanager:
+    container_name: taskmanager
     image: flink:1.18.1-scala_2.12
     depends_on:
       - jobmanager

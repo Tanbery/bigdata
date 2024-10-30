@@ -29,7 +29,8 @@ def delivery_report(err, msg):
     if err is not None:
         print(f'Message delivery failed: {err}')
     else:
-        print(f"Message delivery succeed: {msg.topic()} [{msg.partition()}] [{msg.offset()}] key: [{msg.key()}] value: [{msg.value()}]")
+        print(f"Message delivery succeed: {msg.topic()} [{msg.partition()}] [{msg.offset()}] Key: [{msg.key()}] ")
+        # print(f"Message delivery succeed: {msg.topic()} [{msg.partition()}] [{msg.offset()}] key: [{msg.key().decode('utf-8')}] value: [{msg.value().decode('utf-8')}]")
         
 def main():
     config = {
