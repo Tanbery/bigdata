@@ -113,6 +113,7 @@ services:
     ports:
       - "8081:8081"
       - "6123:6123"
+      #- "9999:9999"
     command: jobmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager

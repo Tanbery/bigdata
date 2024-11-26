@@ -112,7 +112,7 @@ DataStream.writeAsCsv(path,line delimeter, field delimeter);
 DataStream.print();
 DataStream.writeUsingOutputFormat();
 DataStream.writeToSocket();
-addSink();
+DataStream.addSink();
 ```
 
 
