@@ -4,8 +4,11 @@ services:
     image: minio/minio:latest
     container_name: minio
     environment:
-      MINIO_ACCESS_KEY: minioaccesskey
-      MINIO_SECRET_KEY: miniosecretkey
+      MINIO_ROOT_USER: "minioadmin"
+      MINIO_ROOT_PASSWORD: "minioadmin"
+      # MINIO_REGION : "EU-TRK-001"
+      # MINIO_ACCESS_KEY: "minioaccesskey"
+      # MINIO_SECRET_KEY: "miniosecretkey"
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -16,9 +19,6 @@ services:
   nessie:
     image: projectnessie/nessie:latest
     container_name: nessie
-    environment:
-      - JAVA_OPTS="-Xms512m -Xmx1024m"
-      - GIT_REF_NAME=main
     ports:
       - "19120:19120"
     volumes:
@@ -26,7 +26,6 @@ services:
     depends_on:
       - minio
 
-  # Dremio (SQL query engine for data lake)
   dremio:
     image: dremio/dremio-oss:latest
     container_name: dremio
@@ -34,6 +33,7 @@ services:
       - DREMIO_ES_KAFKA_ENABLED=false
       - DREMIO_PORT=9047
       - DREMIO_ADMIN_PASSWORD=adminpassword
+    # user: "dremio:dremio"
     ports:
       - "9047:9047"
       - "31010:31010"
@@ -47,3 +47,30 @@ volumes:
   minio_data:
   nessie_data:
   dremio_data:
+
+
+
+# Go to localhost:9001 in your browser
+# login with username/password = admin/password
+# click on the buckets section on the menu to the left
+# create a new bucket called warehouse
+
+# Connect Dremio to Nessie/Minio
+# Go to localhost:9047
+# Setup your Dremio Account
+# From dashboard click on "add source" in the bottom left
+# Select "Nessie"
+# On the "General" section add the following settings
+# name: nessie
+# Nessie Endpoint URL: http://nessie:19120/api/v2
+# authentication: none
+# On the "Storage" section add the following settings:
+# Authentication Type: AWS Access Key
+# AWS Access Key: admin
+# AWS Secret Key: password
+# AWS Root Path: /warehouse
+# Connection Properties(name/value):
+# fs.s3a.style.path.access = true
+# fs.s3a.endpoint = minio:9000
+# dremio.s3.compat = true
+# encrypt connection: false
