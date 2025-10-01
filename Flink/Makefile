@@ -1,3 +1,9 @@
+SHELL := /bin/bash
+.PHONY: up down print-var gen build clean run-local run-cluster run-detached cancel list
+# .PHONY: all build clean run run-cluster run-detached cancel help
+# .PHONY: help
+.DEFAULT_GOAL:=help
+
 # Function to extract property values using Maven Help Plugin
 define get_property
 	$(shell mvn help:evaluate -Dexpression=$(1) -q -DforceStdout  | xargs echo -n)
@@ -36,18 +42,18 @@ up:
 
 down:
 	@echo "Stopping the services"
-	@$(DOCKER)  compose down
+	@$(DOCKER)  compose down -v
 
 print-var:
-	@echo "Project Name: 	$(PROJECT_NAME)"
-	@echo "Project Version:  $(PROJECT_VERSION)"
-	@echo "Main Class: 		  $(MAIN_CLASS)"
-	@echo "Flink Version: 	  $(FLINK_VERSION)"
-	@echo "Scala Version:    $(SCALA_VERSION)"
-	@echo "JAR File:            $(JAR_FILE)"
-	@echo "FLINK HOME:     $(FLINK_HOME)"
-	@echo "FLINK CLUSTER: $(FLINK_CLUSTER)"
-	@echo "ARGS:               $(ARGS)"
+	@echo "Project Name		:$(PROJECT_NAME)"
+	@echo "Project Version	:$(PROJECT_VERSION)"
+	@echo "Main Class		:$(MAIN_CLASS)"
+	@echo "Flink Version	:$(FLINK_VERSION)"
+	@echo "Scala Version	:$(SCALA_VERSION)"
+	@echo "JAR File			:$(JAR_FILE)"
+	@echo "FLINK HOME		:$(FLINK_HOME)"
+	@echo "FLINK CLUSTER	:$(FLINK_CLUSTER)"
+	@echo "ARGS				:$(ARGS)"
 
 gen:
 	@echo "Generating fake data..."
@@ -86,7 +92,7 @@ cancel:
 # Cancel the Flink job
 list:
 	@echo "Listing the Flink running job..."
-	$(FLINK_HOME)/bin/flink list)
+	$(FLINK_HOME)/bin/flink list
 
 # Print the help
 help:
@@ -99,8 +105,3 @@ help:
 	@echo "  make cancel          - Cancel the job on the cluster"
 	@echo "  make help            - Print this help message"
 	@echo "  make gen             - generate fake data"
-
-
-# .PHONY: all build clean run run-cluster run-detached cancel help
-.PHONY: help
-.DEFAULT_GOAL:=help

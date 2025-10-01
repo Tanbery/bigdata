@@ -1,8 +1,8 @@
 version: '3.8'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.4.0
     hostname: zookeeper
+    image: confluentinc/cp-zookeeper:7.4.0
     container_name: zookeeper
     ports:
       - "2181:2181"
@@ -16,9 +16,9 @@ services:
       retries: 5
 
   broker:
+    container_name: kafka
+    # hostname: broker
     image: confluentinc/cp-kafka:7.4.0
-    hostname: broker
-    container_name: broker
     depends_on:
       zookeeper:
         condition: service_healthy
@@ -30,7 +30,7 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
@@ -47,8 +47,8 @@ services:
       retries: 10
 
   kafka-ui:
-    image: confluentinc/cp-enterprise-control-center:7.4.0
     hostname: kafka-ui
+    image: confluentinc/cp-enterprise-control-center:7.4.0
     container_name: kafka-ui
     depends_on:
       broker:
@@ -56,7 +56,7 @@ services:
     ports:
       - "9021:9021"
     environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
@@ -69,43 +69,46 @@ services:
       timeout: 10s
       retries: 5
 
-  postgres:
-    image: postgres:latest
-    container_name: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
-    healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "postgres" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # postgres:
+  #   container_name: postgres
+  #   image: postgres:latest
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: postgres
+  #   healthcheck:
+  #     test: [ "CMD", "pg_isready", "-U", "postgres" ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
-    container_name: es-container
-    environment:
-      - node.name= es-container
-      - cluster.name=elasticsearch-cluster
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - xpack.security.transport.ssl.enabled=false
-    ports:
-      - "9200:9200"
-      - "9300:9300"
+  # elasticsearch:
+  #   container_name: elastic
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.25
+  #   environment:
+  #     - node.name=elastic
+  #     - cluster.name=elasticsearch-cluster
+  #     - discovery.type=single-node
+  #     # - xpack.security.enabled=false
+  #     # - xpack.security.enrollment.enabled=false
+  #     # - xpack.security.transport.ssl.enabled=false
+  #   ports:
+  #     - "9200:9200"
+  #     - "9300:9300"
 
-  kibana:
-    container_name: kb-container
-    image: docker.elastic.co/kibana/kibana:8.11.1
-    environment:
-      - ELASTICSEARCH_HOSTS=http://es-container:9200
-    depends_on:
-      - elasticsearch
-    ports:
-      - "5601:5601"
+  # kibana:
+  #   container_name: kibana
+  #   image: docker.elastic.co/kibana/kibana:7.17.25
+  #   environment:
+  #     - node.name=kibana
+  #     - cluster.name=elasticsearch-cluster
+  #     - ELASTICSEARCH_HOSTS=http://elastic:9200
+  #   depends_on:
+  #     - elasticsearch
+  #   ports:
+  #     - "5601:5601"
 
   jobmanager:
     container_name: jobmanager
@@ -126,27 +129,3 @@ services:
     command: taskmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
-
-# #bde2020 Docker
-#  flink-master:
-#    image: bde2020/flink-master:1.14.5-hadoop3.2
-#    hostname: flink-master
-#    container_name: flink-master
-#    volumes:
-#      - /home/enver/jars:/opt
-#    ports:
-#      - "8080:8080"
-#      - "8081:8081"
-#      # - "9090:9090"
-#
-#  flink-worker:
-#    image: bde2020/flink-worker:1.14.5-hadoop3.2
-#    hostname: flink-worker
-#    container_name: flink-worker
-#    volumes:
-#      - /home/enver/jars:/opt
-#    environment:
-#      - FLINK_MASTER_PORT_6123_TCP_ADDR=flink-master
-#    #     - FLINK_NUM_TASK_SLOTS=2
-#    depends_on:
-#      - flink-master

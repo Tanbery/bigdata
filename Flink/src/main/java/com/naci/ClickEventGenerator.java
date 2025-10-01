@@ -13,9 +13,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Categories are taken from: https://support.google.com/merchants/answer/6324436?hl=en
- */
+
 public class ClickEventGenerator extends RichParallelSourceFunction<String> {
     private final long numberOfUsers;
 
@@ -38,7 +36,7 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
         // this.categories = readCategories();
         this.users = new ArrayList<>();
         // create initial users
-        for(int i = 0; i < 50_000; i++) {
+        for (int i = 0; i < 50_000; i++) {
             users.add(new AuthenticatedUser(i, getNextIP()));
         }
     }
@@ -47,26 +45,19 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
     public void run(SourceContext<String> sourceContext) throws Exception {
 
         long sequenceId = 0;
-        while(running) {
-
-            // Thread.sleep(10000);
-            ObjectNode node = mapper.createObjectNode();
-
+        while (running) {
             User u = getNextUser();
             long ts = getNextTimestamp();
 
+            ObjectNode node = mapper.createObjectNode();
+
             node.put("user.ip", intIPtoString(u.getIP()));
             node.put("user.accountId", u.getId());
-
-            //node.put("page", getNextUrl());
-
             node.put("host.timestamp", ts);
-            // write fake hostname for globalcorp.com's berlin load balancer
             node.put("host", String.format("lb-brl-%d-%d.globalcorp.com",
-                    getRuntimeContext().getNumberOfParallelSubtasks(),
-                    getRuntimeContext().getIndexOfThisSubtask())
-                );
+                    getRuntimeContext().getNumberOfParallelSubtasks(), getRuntimeContext().getIndexOfThisSubtask()));
             node.put("host.sequence", sequenceId);
+            // node.put("page", getNextUrl());
 
             sourceContext.collectWithTimestamp(mapper.writeValueAsString(node), ts);
             sequenceId++;
@@ -74,7 +65,7 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
             if (sequenceId % 10000 == 0) {
                 sourceContext.emitWatermark(new Watermark(ts - 60000)); // 1 min max delay
             }
-            // Thread.sleep(10000);
+            Thread.sleep(10000);
         }
     }
 
@@ -82,7 +73,7 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
         int b1 = (ip >>> 24) & 0xff;
         int b2 = (ip >>> 16) & 0xff;
         int b3 = (ip >>> 8) & 0xff;
-        int b4 = ip  & 0xff;
+        int b4 = ip & 0xff;
         return new StringBuffer().append(b1).append(".")
                 .append(b2).append(".")
                 .append(b3).append(".")
@@ -107,17 +98,18 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
     };
 
     private User getNextUser() {
-        if(RND.nextBoolean()) {
+        if (RND.nextBoolean()) {
             return anonymousUser;
         }
-        // replace one user (note: this might generate data with the same user being logged in multiple times)
-        users.set(RND.nextInt(users.size()), new AuthenticatedUser(ThreadLocalRandom.current().nextLong(this.numberOfUsers), getNextIP()));
+        // replace one user (note: this might generate data with the same user being
+        // logged in multiple times)
+        users.set(RND.nextInt(users.size()),
+                new AuthenticatedUser(ThreadLocalRandom.current().nextLong(this.numberOfUsers), getNextIP()));
 
         // get a user from the local state.
         int userIndex = RND.nextInt(users.size());
         return users.get(userIndex);
     }
-  
 
     private long getNextTimestamp() {
         this.eventTimeMillis += 10;
@@ -134,6 +126,7 @@ public class ClickEventGenerator extends RichParallelSourceFunction<String> {
 
         int getIP();
     }
+
     private static class AuthenticatedUser implements User {
 
         private long id;

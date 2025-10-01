@@ -3,7 +3,7 @@ import random
 import time
 
 from faker import Faker
-from confluent_kafka import Producer
+from confluent_kafka import Producer # type: ignore
 from datetime import datetime
 
 fake = Faker()
@@ -21,7 +21,7 @@ def generate_sales_transactions():
         'productBrand': random.choice(['apple', 'samsung', 'oneplus', 'mi', 'boat', 'sony']),
         'currency': random.choice(['USD', 'GBP']),
         'customerId': user['username'],
-        'transactionDate': datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
+        'transactionDate': datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
         "paymentMethod": random.choice(['credit_card', 'debit_card', 'online_transfer'])
     }
 
@@ -43,7 +43,7 @@ def main():
 
     curr_time = datetime.now()
 
-    while (datetime.now() - curr_time).seconds < 50:
+    while (datetime.now() - curr_time).seconds < 10:
         try:
             transaction = generate_sales_transactions()
             transaction['totalAmount'] = transaction['productPrice'] * transaction['productQuantity']

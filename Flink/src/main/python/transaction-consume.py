@@ -1,7 +1,7 @@
 import json
 from time import sleep
 
-from confluent_kafka import Consumer
+from confluent_kafka import Consumer # type: ignore
 
 def main():
     config = {
