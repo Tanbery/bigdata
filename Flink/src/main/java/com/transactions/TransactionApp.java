@@ -190,9 +190,10 @@ public class TransactionApp {
                                 .setTopics(MyApp.kafkaTopic)
                                 .setValueOnlyDeserializer(new SimpleStringSchema())
                                 .build();
-                DataStream<String> stream = env.fromSource(kfkSource,WatermarkStrategy.noWatermarks(), "Kafka source");
+                DataStream<String> stream = env.fromSource(kfkSource, WatermarkStrategy.noWatermarks(), "Kafka source");
 
-                // DataStream<String> stream = env.addSource(new FlinkKafkaConsumer<>(MyApp.kafkaTopic, new SimpleStringSchema(),config));
+                // DataStream<String> stream = env.addSource(new
+                // FlinkKafkaConsumer<>(MyApp.kafkaTopic, new SimpleStringSchema(),config));
 
                 WatermarkStrategy<Transaction> ws = WatermarkStrategy
                                 .<Transaction>forMonotonousTimestamps()
@@ -220,14 +221,14 @@ public class TransactionApp {
                 transactionApp.createAndInsertSalesPerCat(salesPerCatStream);
 
                 DataStream<TransSalesPerDay> salesPerDayStream = transactionStream.map(t -> {
-                return new TransSalesPerDay(new Date(t.getTransactionDate().getTime()),
-                t.getTotalAmount());
+                        return new TransSalesPerDay(new Date(t.getTransactionDate().getTime()),
+                                        t.getTotalAmount());
                 })
-                .keyBy(TransSalesPerDay::getTransactionDate)
-                .reduce((cur, pre) -> {
-                cur.setTotalSales(cur.getTotalSales() + pre.getTotalSales());
-                return cur;
-                });
+                                .keyBy(TransSalesPerDay::getTransactionDate)
+                                .reduce((cur, pre) -> {
+                                        cur.setTotalSales(cur.getTotalSales() + pre.getTotalSales());
+                                        return cur;
+                                });
                 transactionApp.createAndInsertSalesPerDay(salesPerDayStream);
                 env.execute("Flink Transaction Realtime Streaming");
         }
