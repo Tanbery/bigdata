@@ -7,7 +7,7 @@ import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeW
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 import com.udemy.dto.Avg;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 public class WinSlidingProcessingTime {
   @SuppressWarnings("deprecation")

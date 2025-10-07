@@ -7,7 +7,7 @@ import org.apache.flink.streaming.api.windowing.assigners.GlobalWindows;
 import org.apache.flink.streaming.api.windowing.triggers.CountTrigger;
 
 import com.udemy.dto.Avg;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 public class WinGlobalTrigger {
   @SuppressWarnings("deprecation")

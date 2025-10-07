@@ -8,7 +8,7 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTime
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 import com.udemy.dto.Avg;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 public class WinTumblingProcessingTime {
 

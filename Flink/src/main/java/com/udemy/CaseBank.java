@@ -6,7 +6,7 @@ import org.apache.flink.util.Collector;
 
 import com.udemy.dto.AlarmedCustomer;
 import com.udemy.dto.LostCard;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;

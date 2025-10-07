@@ -1,4 +1,4 @@
-package com.datastream;
+package com.udemy.datastream;
 //package p1;
 
 import org.apache.flink.api.common.functions.FilterFunction;

@@ -21,7 +21,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import com.transactions.dto.TransSalesPerCategory;
 import com.transactions.dto.TransSalesPerDay;
 import com.transactions.dto.Transaction;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 public class TransactionApp {
         private JdbcExecutionOptions execOptions;

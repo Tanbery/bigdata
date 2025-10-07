@@ -3,7 +3,7 @@ package com.udemy;
 import org.apache.flink.util.Collector;
 
 import com.udemy.dto.TimeAndText;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.api.common.state.ValueState;

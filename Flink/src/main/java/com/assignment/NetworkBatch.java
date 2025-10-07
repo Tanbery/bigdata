@@ -7,7 +7,7 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple4;
 
 import com.udemy.dto.NetworkDto;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 public class NetworkBatch {
     public static void main(String[] args) throws Exception {

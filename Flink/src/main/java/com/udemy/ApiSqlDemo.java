@@ -5,7 +5,6 @@ import org.apache.flink.table.api.java.BatchTableEnvironment;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.sources.CsvTableSource;
-import org.apache.flink.table.sources.TableSource;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 
@@ -17,7 +16,7 @@ public class ApiSqlDemo {
 		BatchTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
 		
 		/* create table from csv */
-		TableSource tableSrc = CsvTableSource.builder()
+		CsvTableSource tableSrc = CsvTableSource.builder()
 				.path("/home/jivesh/avg")
 				.fieldDelimiter(",")
 				.field("date", Types.STRING)

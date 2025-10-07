@@ -6,7 +6,7 @@ import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 
 import com.udemy.dto.CabDto;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 public class CabBatch {
     public static void main(String[] args) throws Exception {

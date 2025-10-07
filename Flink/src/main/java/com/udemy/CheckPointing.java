@@ -10,7 +10,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.CheckpointConfig.ExternalizedCheckpointCleanup;
 
 import com.udemy.dto.Avg;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 public class CheckPointing {
   @SuppressWarnings("deprecation")

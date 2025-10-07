@@ -1,4 +1,4 @@
-package com.datastream;
+package com.udemy.datastream;
 
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;

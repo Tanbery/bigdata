@@ -7,7 +7,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import com.udemy.dto.Avg;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 public class OperReduce {
   @SuppressWarnings("deprecation")

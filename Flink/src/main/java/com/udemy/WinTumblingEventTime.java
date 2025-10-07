@@ -13,7 +13,7 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 import com.udemy.dto.TimeAndText;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 @SuppressWarnings("deprecation")
 public class WinTumblingEventTime {

@@ -10,7 +10,7 @@ import org.apache.flink.api.java.utils.ParameterTool;
 
 import com.udemy.dto.Location;
 import com.udemy.dto.Person;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 public class OperJoins {
 	

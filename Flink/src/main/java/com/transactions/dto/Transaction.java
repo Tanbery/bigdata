@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 @Data
 public class Transaction {

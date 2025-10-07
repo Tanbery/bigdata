@@ -1,4 +1,4 @@
-package com.util;
+package com.udemy.util;
 
 import java.io.InputStream;
 import java.util.ArrayList;

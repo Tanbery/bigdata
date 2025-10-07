@@ -1,17 +1,11 @@
 package com.udemy;
 
 import org.apache.flink.api.common.typeinfo.Types;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
-import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.table.sources.CsvTableSource;
 import org.apache.flink.table.sources.TableSource;
-import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
-import org.apache.flink.api.java.tuple.Tuple5;
 
 public class ApiTableDemo {
 
@@ -20,8 +14,8 @@ public class ApiTableDemo {
 		ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 		BatchTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
 		
-		/* create table from csv */
-		TableSource tableSrc = CsvTableSource.builder()
+		//create table from csv
+		TableSource<?> tableSrc = CsvTableSource.builder()
 				.path("/home/jivesh/avg")
 				.fieldDelimiter(",")
 				.field("date", Types.STRING)
@@ -35,17 +29,17 @@ public class ApiTableDemo {
 		
 		// Table catalog = tableEnv.scan("CatalogTable");
 		
-		/* querying with Table API */
-		Table order20 =tableEnv.scan("CatalogTable")
-				.filter(" category === 'Category5'")
-				.groupBy("month")
-				.select("month, profit.sum as sum")
-				.orderBy("sum");
+		//querying with Table API
+		// Table order20 =tableEnv.scan("CatalogTable")
+		// 		.filter(" category === 'Category5'")
+		// 		.groupBy("month")
+		// 		.select("month, profit.sum as sum")
+		// 		.orderBy("sum");
 		
 		
-		DataSet<Row1> order20Set = tableEnv.toDataSet(order20, Row1.class);
+		// DataSet<Row1> order20Set = tableEnv.toDataSet(order20, Row1.class);
 		
-		order20Set.writeAsText("/home/jivesh/table1");
+		// order20Set.writeAsText("/home/jivesh/table1");
 		//tableEnv.toAppendStream(order20, Row.class).writeAsText("/home/jivesh/table");
 		env.execute("State");
 	}

@@ -1,11 +1,11 @@
-package com.datagen;
+package com.udemy.datagen;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Random;
 
-import com.util.MyApp;
+import com.udemy.util.MyApp;
 
 import java.net.ServerSocket;
 
