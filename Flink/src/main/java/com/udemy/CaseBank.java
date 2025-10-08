@@ -29,6 +29,7 @@ import org.apache.flink.api.common.serialization.SimpleStringEncoder;
 import org.apache.flink.streaming.api.functions.sink.filesystem.StreamingFileSink;
 import org.apache.flink.streaming.api.functions.sink.filesystem.rollingpolicies.DefaultRollingPolicy;
 
+@SuppressWarnings("deprecation")
 public class CaseBank {
   public static final MapStateDescriptor < String, AlarmedCustomer > alarmedCustStateDescriptor =
     new MapStateDescriptor < String, AlarmedCustomer > ("alarmed_customers", BasicTypeInfo.STRING_TYPE_INFO, Types.POJO(AlarmedCustomer.class));

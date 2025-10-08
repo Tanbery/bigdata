@@ -1,0 +1,29 @@
+services:
+  jobmanager:
+    container_name: jobmanager
+    image: flink:1.18.1-scala_2.12
+    ports:
+      - "8081:8081"
+      - "6123:6123"
+      #- "9999:9999"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      network-enf:
+
+  taskmanager:
+    container_name: taskmanager
+    image: flink:1.18.1-scala_2.12
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      network-enf:
+
+networks:
+  network-enf:
+    name: network-enf
+    driver: bridge

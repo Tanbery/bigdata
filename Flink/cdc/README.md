@@ -82,6 +82,19 @@ This setup is intended for development and testing purposes. For production envi
 
 
 ```shell
-curl -H 'Content-Type:application/json' localhost:8083/connectors --data 
-'{"name":"postgres-connector","config":{         "connector.class": "io.debezium.connector.postgresql.PostgresConnector",    "topic.prefix": "cdc",          "database.user": "postgres",        "database.dbname": "financial_db",      "database.hostname": "postgres",        "database.password": "postgres", "plugin.name": "pgoutput",      "decimal.handling.mode":"string"      }}'
+curl -X POST -H "Content-Type: application/json" \
+    --data '{
+      "name": "postgres-connector",
+      "config": {
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+        "topic.prefix": "cdc",
+        "database.user": "postgres",
+        "database.password": "postgres",
+        "database.dbname": "financial_db",
+        "database.hostname": "postgres",
+        "plugin.name": "pgoutput",
+        "decimal.handling.mode": "string"
+      }
+    }' \
+    http://localhost:8083/connectors
 ```

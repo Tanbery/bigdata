@@ -19,9 +19,10 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 
+@SuppressWarnings("deprecation")
 public class CaseStock
 {
-    public static void main(String[] args) throws Exception
+	public static void main(String[] args) throws Exception
     {
 	final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 

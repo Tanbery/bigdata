@@ -1,0 +1,35 @@
+services:
+  elastic:
+    container_name: elastic
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.25
+    environment:
+      - node.name=elastic
+      - cluster.name=elasticsearch-cluster
+      - discovery.type=single-node
+      # - xpack.security.enabled=false
+      # - xpack.security.enrollment.enabled=false
+      # - xpack.security.transport.ssl.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      network-enf:
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.17.25
+    environment:
+      - node.name=kibana
+      - cluster.name=elasticsearch-cluster
+      - ELASTICSEARCH_HOSTS=http://elastic:9200
+    depends_on:
+      - elastic
+    ports:
+      - "5601:5601"
+    networks:
+      network-enf:
+
+networks:
+  network-enf:
+    name: network-enf
+    driver: bridge

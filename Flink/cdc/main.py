@@ -61,7 +61,7 @@ if __name__ == "__main__":
     create_table(conn)
     curr_time = datetime.now()
     
-    while (datetime.now() - curr_time).seconds < 20:
+    while (datetime.now() - curr_time).seconds < 2:
         try:
             transaction = generate_transaction()
             cur = conn.cursor()

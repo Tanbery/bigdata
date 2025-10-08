@@ -1,4 +1,4 @@
-package com.salesAnalysis.entities;
+package com.salesAnalysis.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
