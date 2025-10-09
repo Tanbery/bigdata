@@ -18,7 +18,7 @@ import org.apache.flink.api.common.serialization.SimpleStringSchema;
 
 
 @SuppressWarnings("deprecation")
-public class Wikimedia01min {
+public class WikimediaConsumer {
 
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

@@ -205,31 +205,31 @@ public class TransactionApp {
 
                 transactionStream.print();
                 // transactionStream.writeAsText("~/out.txt");
-                transactionApp.createAndInsertTrans(transactionStream);
+                // transactionApp.createAndInsertTrans(transactionStream);
                 transactionApp.insertTrans2ES(transactionStream);
 
-                DataStream<TransSalesPerCategory> salesPerCatStream = transactionStream.map(t -> {
-                        return new TransSalesPerCategory(new Date(t.getTransactionDate().getTime()),
-                                        t.getProductCategory(),
-                                        t.getTotalAmount());
-                })
-                                .keyBy(TransSalesPerCategory::getCategory)
-                                .reduce((cur, pre) -> {
-                                        cur.setTotalSales(cur.getTotalSales() + pre.getTotalSales());
-                                        return cur;
-                                });
-                transactionApp.createAndInsertSalesPerCat(salesPerCatStream);
+                // DataStream<TransSalesPerCategory> salesPerCatStream = transactionStream.map(t -> {
+                //         return new TransSalesPerCategory(new Date(t.getTransactionDate().getTime()),
+                //                         t.getProductCategory(),
+                //                         t.getTotalAmount());
+                // })
+                //                 .keyBy(TransSalesPerCategory::getCategory)
+                //                 .reduce((cur, pre) -> {
+                //                         cur.setTotalSales(cur.getTotalSales() + pre.getTotalSales());
+                //                         return cur;
+                //                 });
+                // transactionApp.createAndInsertSalesPerCat(salesPerCatStream);
 
-                DataStream<TransSalesPerDay> salesPerDayStream = transactionStream.map(t -> {
-                        return new TransSalesPerDay(new Date(t.getTransactionDate().getTime()),
-                                        t.getTotalAmount());
-                })
-                                .keyBy(TransSalesPerDay::getTransactionDate)
-                                .reduce((cur, pre) -> {
-                                        cur.setTotalSales(cur.getTotalSales() + pre.getTotalSales());
-                                        return cur;
-                                });
-                transactionApp.createAndInsertSalesPerDay(salesPerDayStream);
+                // DataStream<TransSalesPerDay> salesPerDayStream = transactionStream.map(t -> {
+                //         return new TransSalesPerDay(new Date(t.getTransactionDate().getTime()),
+                //                         t.getTotalAmount());
+                // })
+                //                 .keyBy(TransSalesPerDay::getTransactionDate)
+                //                 .reduce((cur, pre) -> {
+                //                         cur.setTotalSales(cur.getTotalSales() + pre.getTotalSales());
+                //                         return cur;
+                //                 });
+                // transactionApp.createAndInsertSalesPerDay(salesPerDayStream);
                 env.execute("Flink Transaction Realtime Streaming");
         }
 }

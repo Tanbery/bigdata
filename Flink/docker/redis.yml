@@ -1,0 +1,28 @@
+services:
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      network-enf:
+
+  redis-ui:
+    image: redis/redisinsight:latest
+    container_name: redis-ui
+    ports:
+      # - "8001:8001"
+      - "5540:5540"
+    environment:
+      - TZ=Europe/Istanbul
+    depends_on:
+      - redis
+    networks:
+      network-enf:
+
+
+networks:
+  network-enf:
+    name: network-enf
+    driver: bridge

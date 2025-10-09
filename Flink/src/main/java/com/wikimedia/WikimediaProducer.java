@@ -52,8 +52,8 @@ public class WikimediaProducer implements EventHandler {
     public void onMessage(String arg0, MessageEvent msgEvent) {
         try {
             JsonNode jsonNode = mapper.readTree(msgEvent.getData());
-            if (jsonNode.has("id") ) {
-                producer.send(this.topic, jsonNode.get("id").asText(), msgEvent.getData());
+            if (jsonNode.has("meta") ) {
+                producer.send(this.topic, jsonNode.get("meta").asText(), msgEvent.getData());
             } else {
                 System.out.println("Invalid ID Error: Key:" + msgEvent.getLastEventId() + " Value:" + msgEvent.getData());
             }
